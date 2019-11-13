@@ -1,0 +1,15 @@
+<nav class="navbar navbar-light bg-light">
+    <br><br>
+</nav>
+<div class='container-fluid bg-light text-center'>
+    <h3>Login</h3>
+    <div class="container form-group">
+        <label>Usuario</label>
+        <input type="text" class="form-control" #usuario>
+        <label>Senha</label>
+        <input type="password" class="form-control" #senha>
+        <br>
+        <P class="text-danger">{{frase}}</P>
+        <button class="btn btn-outline-primary" (click)="logar(usuario.value,senha.value)">Logar</button>
+    </div>
+</div>

@@ -1,3 +1,4 @@
+import { SettingService } from './setting.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,4 +8,20 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'crud';
+  mostrarMenu: boolean = false;
+
+  atualizar() {
+    if (localStorage.getItem('Usuario')) {
+      return true;
+    }
+  }
+
+  constructor(private settingService: SettingService) {
+
+  }
+  ngOnInit() {
+    this.mostrarMenu = this.settingService.getUsuario();
+    console.log(this.mostrarMenu);
+  }
+
 }

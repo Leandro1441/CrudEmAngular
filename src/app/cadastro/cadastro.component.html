@@ -1,0 +1,12 @@
+<div class="container-fluid  text-center">
+  <h3> Novo Cadastro</h3>
+  <div class="container form-group">
+    <label>Usuario</label>
+    <input type="text" class="form-control" #usuario>
+    <label>Senha</label>
+    <input type="password" class="form-control" #senha>
+    <label>Confimar senha</label>
+    <input type="password" class="form-control" #csenha><br>
+    <button class="btn btn-primary" (click)='novoUsario(usuario.value,senha.value,csenha.value)'>Salvar</button>
+  </div>
+</div>
