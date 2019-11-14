@@ -33,7 +33,7 @@ export class UsuarioService {
     alert('Usuario cadastrado')
   }
 
-  deletarUsuarioId(id){
+  deletarUsuarioId(id) {
     console.log(id)
     for (let i = 0; i < this.usuarios.length; i++) {
       if (this.usuarios[i].id == id) {

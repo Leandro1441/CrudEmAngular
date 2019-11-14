@@ -21,13 +21,12 @@ export class AtualizarComponent implements OnInit {
   }
 
   atualizar() {
-    console.log(this.id)
     if (this.nUsuario != '' && this.nUsuario.length >= 8) {
       if (this.nSenha != '' && this.nSenha.length >= 8) {
         let atu
         atu = this.usuarioService.atualizar(this.id, this.nUsuario, this.nSenha)
         if (atu) {
-          this.router.navigate(['/consultar'])
+          this.router.navigate(['/consultar/'+this.id])
         }
         else {
           alert('Usuario não alterado!')
@@ -40,7 +39,6 @@ export class AtualizarComponent implements OnInit {
     else {
       console.log('Usuario Invalido!')
     }
-    console.log(this.id)
   }
 
   buscar() {

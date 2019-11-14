@@ -21,7 +21,6 @@ export class AppComponent {
   }
   ngOnInit() {
     this.mostrarMenu = this.settingService.getUsuario();
-    console.log(this.mostrarMenu);
   }
 
 }

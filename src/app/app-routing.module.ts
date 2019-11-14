@@ -14,6 +14,7 @@ const APP_ROUTES: Routes = [
     { path: 'cadastro', component: CadastroComponent, canActivate: [AuthGuardService] },
     { path: 'deletar', component: DeleteComponent, canActivate: [AuthGuardService] },
     { path: 'consultar', component: ConsultarComponent, canActivate: [AuthGuardService] },
+    { path: 'consultar/:id', component: ConsultarComponent, canActivate: [AuthGuardService] },
     { path: '', component: LoginComponent },
     { path: 'atualizar', component: AtualizarComponent, canActivate: [AuthGuardService] }
 ];

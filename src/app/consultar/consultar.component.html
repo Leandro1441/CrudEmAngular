@@ -2,8 +2,8 @@
     <h3 class="text-center ">Usuarios cadastrados</h3>
     <label>Usuario</label>
     <input type="text" class="form-control" (keyup)='consultarUsuario(usuario)' [(ngModel)]="usuario"><br>
-</div>
-<div class="container-fluid text-center">
+</div >
+<div class="container-fluid text-center" *ngIf="table">
     <br>
     <table class="table bg-light">
         <thead>
