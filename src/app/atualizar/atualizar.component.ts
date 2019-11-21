@@ -1,6 +1,8 @@
-import { UsuarioService } from './../servicos/usuario.service';
+import { FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { UsuarioService } from './../servicos/usuario.service';
 
 @Component({
   selector: 'app-atualizar',
@@ -8,9 +10,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./atualizar.component.scss']
 })
 export class AtualizarComponent implements OnInit {
+  form: FormGroup;
   id: any
-  nUsuario: any;
-  nSenha: any;
+  usuario: {};
   frase: string = '';
   ativo: boolean = false;
   error: boolean = false;
@@ -21,40 +23,38 @@ export class AtualizarComponent implements OnInit {
   }
 
   atualizar() {
-    if (this.nUsuario != '' && this.nUsuario.length >= 8) {
-      if (this.nSenha != '' && this.nSenha.length >= 8) {
-        let atu
-        atu = this.usuarioService.atualizar(this.id, this.nUsuario, this.nSenha)
-        if (atu) {
-          this.router.navigate(['/consultar/'+this.id])
+    this.usuarioService.atualizar(this.usuario[0], this.id).subscribe(
+      sucess => this.router.navigate(['/consultar']),
+      error => {
+        if (error.error.text == 'b') {
+          alert('Usuario ja existente')
         }
-        else {
-          alert('Usuario não alterado!')
+        else if (error.error.text == 'c') {
+          alert('Campos Invalidos')
         }
+        else
+          console.log(error)
       }
-      else {
-        console.log('Senha Invalida!')
-      }
-    }
-    else {
-      console.log('Usuario Invalido!')
-    }
+    )
   }
-
   buscar() {
-    let usuario = (this.usuarioService.buscarUsuarioId(this.id))
-    if (usuario.id) {
-      this.nUsuario = usuario.usuario;
-      this.nSenha = usuario.senha;
-      this.frase = '';
-      this.ativo = true;
-      this.error = false;
-    }
-    else {
-      this.frase = 'Usuario não encontrado';
-      this.ativo = false;
-      this.error = true;
-    }
+    this.usuarioService.buscarUsuarioId(this.id).subscribe(
+      sucess => {
+        this.usuario = sucess;
+        this.frase = '';
+        this.ativo = true;
+        this.error = false;
+      },
+      error => {
+        if (error.error.text == 'ID invalido!') {
+          this.frase = error.error.text
+          this.ativo = false;
+          this.error = true;
+        }
+        else
+          console.log(error)
+      }
+    );
   }
 
   constructor(

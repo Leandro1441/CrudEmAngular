@@ -3,13 +3,13 @@
 </nav>
 <div class='container-fluid bg-light text-center'>
     <h3>Login</h3>
-    <div class="container form-group">
+    <form class="container form-group" novalidate [formGroup]="form">
         <label>Usuario</label>
-        <input type="text" class="form-control" #usuario>
+        <input type="text" class="form-control" formControlName="usuario">
         <label>Senha</label>
-        <input type="password" class="form-control" #senha>
-        <br>
+        <input type="password" class="form-control" formControlName="senha">
         <P class="text-danger">{{frase}}</P>
-        <button class="btn btn-outline-primary" (click)="logar(usuario.value,senha.value)">Logar</button>
-    </div>
+        <br>
+        <button class="btn btn-outline-primary" (click)="logar()">Logar</button>
+    </form>
 </div>

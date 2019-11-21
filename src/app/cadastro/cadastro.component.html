@@ -1,12 +1,22 @@
 <div class="container-fluid  text-center">
   <h3> Novo Cadastro</h3>
-  <div class="container form-group">
-    <label>Usuario</label>
-    <input type="text" class="form-control" #usuario>
-    <label>Senha</label>
-    <input type="password" class="form-control" #senha>
-    <label>Confimar senha</label>
-    <input type="password" class="form-control" #csenha><br>
-    <button class="btn btn-primary" (click)='novoUsario(usuario.value,senha.value,csenha.value)'>Salvar</button>
-  </div>
+  <form class="container form-group" novalidate [formGroup]="form">
+
+    <label for='usuario'>Usuario</label>
+    <input type="text" class="form-control" formControlName="usuario">
+    <small style="color: green;">mix:8 Max:20</small> <br><br>
+
+    <label for='senha'>Senha</label>
+    <input type="password" class="form-control" formControlName="senha">
+    <small style="color: green;">mix:8 Max:20</small> <br><br>
+
+    <label for='senha2'>Confimar Senha</label>
+    <input type="password" class="form-control" formControlName="senha2">
+    <br>
+    <P [ngClass]="{
+      'text-danger':frase === 'Usuario ou senha invalida!',
+      'text-success':frase === 'Usuario cadastrado com sucesso!'
+    }">{{frase}}</P>
+    <button class="btn btn-primary" type='submit' (click)='salvar()'>Salvar</button>
+  </form>
 </div>

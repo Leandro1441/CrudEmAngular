@@ -1,5 +1,6 @@
 import { UsuarioService } from './../servicos/usuario.service';
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-cadastro',
@@ -7,25 +8,27 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./cadastro.component.scss']
 })
 export class CadastroComponent implements OnInit {
+  form: FormGroup;
+  frase:string
 
-  novoUsario(usuario, senha, csenha) {
-    if (senha === csenha && senha != '' && senha.length >= 8) {
-      let tem = this.usuarioService.buscarUsuario(usuario);
-      if (usuario != '' && usuario.length >= 8 && tem.length == 0) {
-        this.usuarioService.setUsuario(usuario, senha)
-      } else if (tem => 0)
-        alert("Usuario já existente");
-      else
-        alert("Insira um Usuario valido")
+  salvar() {
+    if (this.form.valid) {
+      this.usuarioService.setUsuario(this.form.value).subscribe(
+        sucess => console.log(sucess),
+        error => this.frase=error.error.text
+      );
     }
-    else if (csenha == '' && senha == '' && usuario == '')
-      alert("Campos vazios")
-    else
-      alert('Senha invalida')
+    else{
+      this.frase='Usuario ou senha invalida!'
+    }
   }
-  constructor(private usuarioService: UsuarioService) { }
-
+  constructor(private usuarioService: UsuarioService, private fb: FormBuilder) { }
   ngOnInit() {
+    this.form = this.fb.group({
+      usuario: [null, [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
+      senha: [null, [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
+      senha2: [null, [Validators.required, Validators.minLength(8), Validators.maxLength(20)]]
+    })
   }
 
 }

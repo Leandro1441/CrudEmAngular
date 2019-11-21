@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
 import { routing } from './app-routing.module';
@@ -12,6 +12,8 @@ import { ConsultarComponent } from './consultar/consultar.component';
 import { LoginComponent } from './login/login.component';
 import { AtualizarComponent } from './atualizar/atualizar.component';
 import { AuthGuardService } from './guards/auth-guard.service';
+import {  HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { AuthGuardService } from './guards/auth-guard.service';
   imports: [
     BrowserModule,
     routing,
-    FormsModule
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [UsuarioService,AuthGuardService],
   bootstrap: [AppComponent]

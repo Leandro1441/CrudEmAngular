@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { UsuarioService } from './../servicos/usuario.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-consultar',
@@ -9,29 +10,41 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./consultar.component.scss']
 })
 export class ConsultarComponent implements OnInit {
-  usuarios: any = [{}]
+
+  usuarios:{}
   usuario: string;
-  id: number
+
+  id: number;
   table: boolean = true
-  consultarUsuario() {
-    this.usuarios = this.usuarioService.buscarUsuario(this.usuario);
+
+  consultarUsuario():void {
+    if (this.usuario) {
+      this.usuarioService.buscarUsuario(this.usuario).subscribe(
+        sucess => this.usuarios=sucess,
+        error => 
+            console.log(error)
+      )
+    }
+    else if(this.usuario===''){
+      this.consultarTudo()
+    }
   }
 
+  consultarTudo():void{
+    this.usuarioService.getUsuario().subscribe(
+      sucess => this.usuarios=sucess,
+      error => 
+          console.log(error)
+    )
+  }
   constructor(
     private usuarioService: UsuarioService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit() {
-    this.usuarios = this.usuarioService.getUsuario();
-    let teste: { id: number; usuario: string; senha: string } = this.usuarioService.buscarUsuarioId(this.route.snapshot.params['id'])
-    if (teste.id != null) {
-      console.log(teste)
-      this.usuarios = [teste];
-    }
-    else
-      this.router.navigate(['/consultar'])
+    this.consultarTudo()
   }
-
 }

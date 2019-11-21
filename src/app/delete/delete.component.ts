@@ -6,20 +6,41 @@ import { UsuarioService } from './../servicos/usuario.service';
   styleUrls: ['./delete.component.scss']
 })
 export class DeleteComponent implements OnInit {
-  usuarios: { id: number; usuario: string; senha: string }[] = []
+  usuarios: {}
   usuario: string
 
-  atualizarTable(){
-    this.usuarios = this.usuarioService.buscarUsuario(this.usuario)
-  }
-  deletarX(id){
-    alert(this.usuarioService.deletarUsuarioId(id))
-    this.atualizarTable();
+  atualizarTable() {
+    if (this.usuario) {
+      this.usuarioService.buscarUsuario(this.usuario).subscribe(
+        sucess => this.usuarios = sucess,
+        error =>
+          console.log(error)
+      )
+    }
+    else if (this.usuario === '') {
+      this.consultarTudo()
+    }
   }
 
+  deletarX(id) {
+    this.usuarioService.deletarUsuarioId(id).subscribe(
+      sucess => alert(sucess),
+      error =>
+        alert(error),
+      () => this.consultarTudo()
+    )
+  }
+
+  consultarTudo(): void {
+    this.usuarioService.getUsuario().subscribe(
+      sucess => this.usuarios = sucess,
+      error =>
+        console.log(error)
+    )
+  }
   constructor(private usuarioService: UsuarioService) { }
 
   ngOnInit() {
-    this.usuarios = this.usuarioService.getUsuario();
+    this.consultarTudo()
   }
 }

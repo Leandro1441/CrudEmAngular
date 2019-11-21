@@ -1,6 +1,10 @@
-import { SettingService } from './../setting.service';
+
+
 import { Injectable } from '@angular/core';
-import { identifierModuleUrl } from '@angular/compiler';
+import { SettingService } from './../setting.service';
+import { HttpClient, HttpRequest, HttpParams } from '@angular/common/http';
+import { Usuario } from './Usuario';
+import { tap, take } from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root'
@@ -19,78 +23,44 @@ export class UsuarioService {
     { id: 9, usuario: 'Leandro1441', senha: "12345678" },
     { id: 10, usuario: '1', senha: "1" },
   ]
-  getUsuario(): { id: number; usuario: string; senha: string }[] {
-    return this.usuarios;
+
+  getUsuario() {
+    const url = 'http://localhost:3000/usuario/'
+    return this.httpClient.get(url).pipe(take(1));
   }
-  setUsuario(usuario: string, senha: string): void {
-    let idMaior = 0
-    for (let i = 0; i < this.usuarios.length; i++) {
-      if (idMaior < this.usuarios[i].id) {
-        idMaior = this.usuarios[i].id + 2;
-      }
-    }
-    this.usuarios.push({ usuario: usuario, senha: senha, id: idMaior })
-    alert('Usuario cadastrado')
+
+  setUsuario(usuario: { usuario: string, senha: string, senha2: string }) {
+    const url = 'http://localhost:3000/usuario/' + usuario.usuario + '/' + usuario.senha + '/' + usuario.senha2;
+    return this.httpClient.post(url, null).pipe(take(1));
   }
 
   deletarUsuarioId(id) {
-    console.log(id)
-    for (let i = 0; i < this.usuarios.length; i++) {
-      if (this.usuarios[i].id == id) {
-        this.usuarios.splice(i, 1);
-        return 'Usuario removido';
-      }
-    }
-    return "Usuario não existente"
+    const url = 'http://localhost:3000/usuario/' + id
+    return this.httpClient.delete(url).pipe(take(1));
   }
 
-  buscarUsuario(usuario: string): { id: number; usuario: string; senha: string }[] {
-    let usuarios2 = []
-    for (let i = 0; i < this.usuarios.length; i++) {
-      if (this.usuarios[i].usuario.match(usuario)) {
-        usuarios2.push(this.usuarios[i]);
-      }
-    }
-    return usuarios2
+  buscarUsuario(usuario: string) {
+    const url = 'http://localhost:3000/usuario/user/' + usuario
+    return this.httpClient.get(url).pipe(take(1));
   }
 
-  buscarUsuarioId(id: number): { id: number; usuario: string; senha: string } {
-    for (let i = 0; i < this.usuarios.length; i++) {
-      if (this.usuarios[i].id == id) {
-        return this.usuarios[i];
-      }
-    }
-    return { id: null, usuario: null, senha: null }
+  buscarUsuarioId(id: number) {
+    const url = 'http://localhost:3000/usuario/id/' + id
+    return this.httpClient.get(url).pipe(take(1))
   }
 
-  atualizar(id: number, nUsuario: string, nSenha: string): boolean {
-    for (let i = 0; i < this.usuarios.length; i++) {
-      if (this.usuarios[i].usuario === nUsuario) {
-        if (this.usuarios[i].senha != nSenha) {
-          this.usuarios[i].senha = nSenha;
-          return true
-        }
-        else {
-          return false
-        }
-      }
-    }
-    for (let i = 0; i < this.usuarios.length; i++) {
-      if (this.usuarios[i].id == id) {
-        this.usuarios[i].usuario = nUsuario;
-        return true
-      }
-    }
+  atualizar(usuario: { usuario: string, senha: string }, id: number) {
+    const url = 'http://localhost:3000/usuario/' + '/' + id + '/' + usuario.usuario + '/' + usuario.senha + '/'
+    return this.httpClient.put(url, null)
   }
 
-  loginUsuario(usuario: string, senha: string): boolean {
-    for (let i = 0; i < this.usuarios.length; i++) {
-      if (this.usuarios[i].usuario == usuario && this.usuarios[i].senha == senha) {
-        this.settingService.setUsuario(usuario);
-        return true
-      }
-    }
-    return false;
+  loginUsuario(usuario: { usuario: string, senha: string }) {
+    const url = 'http://localhost:3000/usuario/login/' + usuario.usuario + '/' + usuario.senha;
+    return this.httpClient.get(url).pipe(take(1))
+
   }
-  constructor(private settingService: SettingService) { }
+  constructor(
+    private settingService: SettingService,
+    private httpClient: HttpClient
+  ) { }
 }
